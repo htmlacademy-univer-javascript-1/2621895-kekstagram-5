@@ -8,7 +8,7 @@ stringLength('проверяемая строка', 10);
 
 
 function palindrome(str){
-  let normalizedStr = str.replaceAll(' ', '').toLowerCase();
+  const normalizedStr = str.replaceAll(' ', '').toLowerCase();
   let newStr = '';
   for (let i = normalizedStr.length - 1; i >= 0; i--) {
     newStr += normalizedStr[i];
@@ -29,13 +29,13 @@ function numbersInRow(row){
   let newStr = '';
 
   for (let i = 0; i < row.length; i++){
-    let num = parseInt(row[i]);
+    const num = parseInt(row[i], 10);
     if (!isNaN(num)) {
       newStr += row[i];
     }
   }
 
-  return newStr.length > 0 ? parseInt(newStr) : NaN;
+  return newStr.length > 0 ? parseInt(newStr, 10) : NaN;
 }
 
 numbersInRow('2023 year');
@@ -43,5 +43,3 @@ numbersInRow('ECMAScript 2022');
 numbersInRow(2023);
 numbersInRow(-1);
 numbersInRow(1.5);
-
-
