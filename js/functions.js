@@ -65,4 +65,3 @@ workDay('08:00', '17:30', '14:00', 90);
 // console.log(workDay('08:00', '14:30', '14:00', 90)); // false
 // console.log(workDay('14:00', '17:30', '08:0', 90));  // false
 // console.log(workDay('8:00', '17:30', '08:00', 900)); // false
-
