@@ -8,6 +8,7 @@ const imgUploadForm = document.querySelector('.img-upload__form'); //вся фо
 const textHashtags = document.querySelector('.text__hashtags'); //поле хештега
 const textDescription = document.querySelector('.text__description');
 
+
 //2.3. Хэш-теги:
 // Валидация хэш-тегов
 const validateHashtags = (value) => {
@@ -112,9 +113,6 @@ textDescription.addEventListener('keydown', (evt) => {
     evt.stopPropagation();
   }
 });
-
-//const effectLevelValue = document.querySelector('.effect-level__value');
-//2.2. Наложение эффекта на изображение:
 
 
 //2.1. Масштаб:
