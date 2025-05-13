@@ -95,11 +95,43 @@ pristine.addValidator(
 );
 
 // Обработчик отправки формы
-imgUploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+import { showSuccessMessage, showErrorMessage } from './upload.js';
+
+const setUserFormSubmit = (onSuccess) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+    const submitButton = imgUploadForm.querySelector('.img-upload__submit');
+    submitButton.disabled = true;
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+
+      fetch('https://29.javascript.htmlacademy.pro/kekstagram', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            onSuccess(); // Закрытие формы
+            showSuccessMessage(); // Показ сообщения об успехе
+          } else {
+            showErrorMessage(); // Показ сообщения об ошибке
+          }
+        })
+        .catch(() => {
+          showErrorMessage(); // Показ сообщения об ошибке, если запрос упал
+        })
+        .finally(() => {
+          submitButton.disabled = false; // Разблокировка кнопки
+        });
+    } else {
+      submitButton.disabled = false; // Разблокировка кнопки, если валидация не прошла
+    }
+  });
+};
+
+export {setUserFormSubmit};
 
 // Предотвращаем закрытие формы при нажатии Esc в полях ввода
 textHashtags.addEventListener('keydown', (evt) => {
@@ -133,3 +165,6 @@ scaleControlBigger.addEventListener('click', () => {
     imgUploadPreviewImg.style.transform = `scale(${scaleControl.value})`;
   }
 });
+
+export {pristine};
+
