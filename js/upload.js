@@ -37,3 +37,81 @@ document.addEventListener('keydown', (evt) =>{
 });
 
 
+//Функция для показа сообщения об успешной отправке
+const showSuccessMessage = () => {
+  // Находим шаблон успешной отправки и клонируем его
+  const successTemplate = document.querySelector('#success').content.querySelector('.success');
+  const successMessage = successTemplate.cloneNode(true);
+  document.body.appendChild(successMessage);
+
+  // Функция для удаления сообщения
+  const removeMessage = () => {
+    successMessage.remove();
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('keydown', onEscKeyDown);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('click', onClickOutside);
+  };
+
+  // Закрытие по Escape
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape') {
+      removeMessage();
+    }
+  };
+
+  // Закрытие по клику вне сообщения
+  const onClickOutside = (evt) => {
+    if (!evt.target.closest('.success__inner')) {
+      removeMessage();
+    }
+  };
+
+  // Закрытие по кнопке
+  successMessage.querySelector('.success__button').addEventListener('click', removeMessage);
+
+  // Вешаем обработчики
+  document.addEventListener('keydown', onEscKeyDown);
+  document.addEventListener('click', onClickOutside);
+};
+
+
+//Функция для показа сообщения об ошибке
+const showErrorMessage = () => {
+  // Находим шаблон ошибки и клонируем его
+  const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  const errorMessage = errorTemplate.cloneNode(true);
+  document.body.appendChild(errorMessage);
+
+  // Функция для удаления сообщения
+  const removeMessage = () => {
+    errorMessage.remove();
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('keydown', onEscKeyDown);
+    // eslint-disable-next-line no-use-before-define
+    document.removeEventListener('click', onClickOutside);
+  };
+
+  // Закрытие по Escape
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape') {
+      removeMessage();
+    }
+  };
+
+  // Закрытие по клику вне сообщения
+  const onClickOutside = (evt) => {
+    if (!evt.target.closest('.error__inner')) {
+      removeMessage();
+    }
+  };
+
+  // Закрытие по кнопке
+  errorMessage.querySelector('.error__button').addEventListener('click', removeMessage);
+
+  // Вешаем обработчики
+  document.addEventListener('keydown', onEscKeyDown);
+  document.addEventListener('click', onClickOutside);
+};
+
+export { showSuccessMessage, showErrorMessage };

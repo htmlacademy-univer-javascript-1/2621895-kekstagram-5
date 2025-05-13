@@ -1,12 +1,14 @@
-import { generatePhotos } from './data.js';
-
+//import { generatePhotos } from './data.js';
+// заккоментируем так как теперь данные приходят с сервера
+import { loadPhotos } from './interactionserver.js';
 // Модуль для отрисовки миниатюр
 (function () {
   const picturesContainer = document.querySelector('.pictures'); // Контейнер для картинок
   const pictureTemplate = document.querySelector('#picture'); // Шаблон картинки
 
   // Генерируем данные для фотографий
-  const photosData = generatePhotos();
+  // заккоментируем так как теперь данные приходят с сервера
+  //const photosData = generatePhotos();
 
   // Функция для создания элемента фотографии
   function createPictureElement(data) {
@@ -37,6 +39,17 @@ import { generatePhotos } from './data.js';
     picturesContainer.appendChild(fragment); // Вставляем фрагмент в контейнер
   }
 
+  loadPhotos()
+    .then((photos) => {
+      renderPictures(photos);
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error('Ошибка при загрузке фотографий:', error);
+    });
+
+  // заккоментируем так как теперь данные приходят с сервера
   // Отрисовываем фотографии
-  renderPictures(photosData);
+  //renderPictures(photosData);
 })();
+
