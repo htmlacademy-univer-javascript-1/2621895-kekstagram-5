@@ -1,55 +1,65 @@
 //import { generatePhotos } from './data.js';
 // заккоментируем так как теперь данные приходят с сервера
 import { loadPhotos } from './interactionserver.js';
+import { openBigPicture } from './drawFullSize.js';
 // Модуль для отрисовки миниатюр
-(function () {
-  const picturesContainer = document.querySelector('.pictures'); // Контейнер для картинок
-  const pictureTemplate = document.querySelector('#picture'); // Шаблон картинки
 
-  // Генерируем данные для фотографий
-  // заккоментируем так как теперь данные приходят с сервера
-  //const photosData = generatePhotos();
+const picturesContainer = document.querySelector('.pictures'); // Контейнер для картинок
+const pictureTemplate = document.querySelector('#picture'); // Шаблон картинки
 
-  // Функция для создания элемента фотографии
-  function createPictureElement(data) {
-    const pictureElement = pictureTemplate.content.cloneNode(true); // Клонируем содержимое шаблона
+// Генерируем данные для фотографий
+// заккоментируем так как теперь данные приходят с сервера
+//const photosData = generatePhotos();
 
-    const img = pictureElement.querySelector('.picture__img');
-    img.src = data.url; // Устанавливаем URL изображения
-    img.alt = data.description; // Устанавливаем описание изображения
+// Функция для создания элемента фотографии
+function createPictureElement(data) {
+  const pictureElement = pictureTemplate.content.cloneNode(true); // Клонируем содержимое шаблона
 
-    const comments = pictureElement.querySelector('.picture__comments');
-    comments.textContent = data.comments.length; // Устанавливаем количество комментариев
+  const img = pictureElement.querySelector('.picture__img');
+  img.src = data.url; // Устанавливаем URL изображения
+  img.alt = data.description; // Устанавливаем описание изображения
 
-    const likes = pictureElement.querySelector('.picture__likes');
-    likes.textContent = data.likes; // Устанавливаем количество лайков
+  const comments = pictureElement.querySelector('.picture__comments');
+  comments.textContent = data.comments.length; // Устанавливаем количество комментариев
 
-    return pictureElement;
-  }
+  const likes = pictureElement.querySelector('.picture__likes');
+  likes.textContent = data.likes; // Устанавливаем количество лайков
 
-  // Функция для отрисовки всех фотографий
-  function renderPictures(pictures) {
-    const fragment = document.createDocumentFragment(); // Создаем документ фрагмент для быстрого добавления
+  // Вешаем обработчик на миниатюру
+  pictureElement.querySelector('.picture').addEventListener('click', () => {
+    openBigPicture(data);
+  });
 
-    pictures.forEach((picture) => {
-      const pictureElement = createPictureElement(picture);
-      fragment.appendChild(pictureElement); // Добавляем элемент в фрагмент
-    });
+  return pictureElement;
+}
 
-    picturesContainer.appendChild(fragment); // Вставляем фрагмент в контейнер
-  }
+// Функция для отрисовки всех фотографий
+function renderPictures(pictures) {
+  const fragment = document.createDocumentFragment(); // Создаем документ фрагмент для быстрого добавления
 
-  loadPhotos()
-    .then((photos) => {
-      renderPictures(photos);
-    })
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.error('Ошибка при загрузке фотографий:', error);
-    });
+  pictures.forEach((picture) => {
+    const pictureElement = createPictureElement(picture);
+    fragment.appendChild(pictureElement); // Добавляем элемент в фрагмент
+  });
 
-  // заккоментируем так как теперь данные приходят с сервера
-  // Отрисовываем фотографии
-  //renderPictures(photosData);
-})();
+  picturesContainer.appendChild(fragment); // Вставляем фрагмент в контейнер
+}
 
+import {showFilters, initFilters} from './filter.js';
+loadPhotos()
+  .then((photos) => {
+    renderPictures(photos);
+    showFilters();
+    initFilters(photos);
+  })
+  .catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error('Ошибка при загрузке фотографий:', error);
+  });
+
+// заккоментируем так как теперь данные приходят с сервера
+// Отрисовываем фотографии
+//renderPictures(photosData);
+
+
+export { renderPictures };

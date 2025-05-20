@@ -11,4 +11,23 @@ function getRandomElement(arr) {
   return arr[getRandomInteger(0, arr.length - 1)];
 }
 
-export {getRandomInteger, getRandomElement};
+// Функция для перемешивания массива
+function shuffleArray(array) {
+  const shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+// Функция чтобы убрать тряску
+function debounce(callback, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => callback.apply(this, args), delay);
+  };
+}
+
+export {getRandomInteger, getRandomElement, shuffleArray, debounce};
+
