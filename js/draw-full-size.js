@@ -1,7 +1,3 @@
-import {createComments} from './data.js';
-import {getRandomInteger} from './util.js';
-
-
 const bigPicture = document.querySelector('.big-picture'); // Контейнер для картинок
 const bigPictureImageDiv = document.querySelector('.big-picture__img'); //  картинка
 const bigPictureImage = bigPictureImageDiv.querySelector('img');
@@ -37,7 +33,7 @@ function openBigPicture(photo) {
   // ГЕНЕРИРУЕМ КОММЕНТАРИИ:
   // Случайно определяем количество комментариев (от 5 до 25)
   // И создаём массив объектов-комментариев с уникальными id
-  allComments = createComments(getRandomInteger(5, 25), usedIds);
+  allComments = photo.comments;
 
   // Сбрасываем счётчик уже отрисованных комментариев
   renderedCommentsCount = 0;
@@ -69,7 +65,6 @@ function openBigPicture(photo) {
       // Добавляем комментарий в список
       socialComments.appendChild(commentElement);
     });
-
     // Обновляем количество уже отрисованных комментариев
     renderedCommentsCount += commentsToRender.length;
 

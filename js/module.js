@@ -1,7 +1,7 @@
 //import { generatePhotos } from './data.js';
 // заккоментируем так как теперь данные приходят с сервера
-import { loadPhotos } from './interactionserver.js';
-import { openBigPicture } from './drawFullSize.js';
+import { loadPhotos } from './interaction-server.js';
+import { openBigPicture } from './draw-full-size.js';
 // Модуль для отрисовки миниатюр
 
 const picturesContainer = document.querySelector('.pictures'); // Контейнер для картинок
