@@ -1,6 +1,6 @@
 // Обработчик отправки формы
 import { showSuccessMessage, showErrorMessage } from './upload.js';
-
+import { resetEffects } from './effects.js';
 const imgUploadPreview = document.querySelector('.img-upload__preview'); //Предварительный просмотр изображения
 const imgUploadPreviewImg = imgUploadPreview.querySelector('img'); //тег имг у предв просмотра
 const scaleControl = document.querySelector('.scale__control--value'); //ползунок размера изображения
@@ -10,6 +10,7 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger'); //
 const imgUploadForm = document.querySelector('.img-upload__form'); //вся форма загрузки
 const textHashtags = document.querySelector('.text__hashtags'); //поле хештега
 const textDescription = document.querySelector('.text__description');
+const imgUploadInput = document.querySelector('.img-upload__input'); //инпут загрузки изображения
 
 const MAX_HASHTAGS_COUNT = 5;
 const MAX_DESCRIPTION_LENGTH = 140;
@@ -102,6 +103,15 @@ pristine.addValidator(
   'Длина комментария не может превышать 140 символов'
 );
 
+//функция сброса формы
+function resetFrom(){
+  scaleControl.value = `${MAX_SCALE_VALUE}%`;
+  imgUploadPreviewImg.style.transform = 'scale(1)'; // Сбросим трансформацию
+  imgUploadPreviewImg.style.filter = 'none'; // Уберем все фильтры
+  imgUploadInput.value = ''; // Очистим инпут файла
+  pristine.reset(); // Сбросим валидацию
+  resetEffects();
+}
 
 const setUserFormSubmit = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
@@ -121,6 +131,7 @@ const setUserFormSubmit = (onSuccess) => {
           if (response.ok) {
             onSuccess(); // Закрытие формы
             showSuccessMessage(); // Показ сообщения об успехе
+            resetFrom();
           } else {
             showErrorMessage(); // Показ сообщения об ошибке
           }

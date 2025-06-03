@@ -10,6 +10,7 @@ const effectsPreviewPhobos = document.querySelector('.effects__preview--phobos')
 const effectsPreviewHeat = document.querySelector('.effects__preview--heat'); //heat
 const effectLevelValue = document.querySelector('.effect-level__value'); //значение для формы
 
+
 //2.2. Наложение эффекта на изображение:
 noUiSlider.create(effectLevelSlider, {
   range: {
@@ -27,7 +28,7 @@ function resetEffects() {
   imgUploadPreviewImg.style.filter = '';
   effectLevelSlider.noUiSlider.set(0);
 }
-
+export { resetEffects };
 //original
 effectsPreviewNone.onclick = function(){
   resetEffects();

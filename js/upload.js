@@ -31,6 +31,7 @@ imgUploadCancel.addEventListener('click', () =>{
 });
 document.addEventListener('keydown', (evt) =>{
   if (evt.key === 'Escape'){
+    imgUploadInput.value = ''; // Очистим инпут файла
     imgUploadOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
   }
