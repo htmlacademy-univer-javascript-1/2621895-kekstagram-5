@@ -17,4 +17,3 @@ imgUploadInput.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 });
-
