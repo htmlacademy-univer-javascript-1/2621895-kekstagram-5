@@ -1,7 +1,8 @@
 //import { generatePhotos } from './data.js';
 // заккоментируем так как теперь данные приходят с сервера
-import { loadPhotos } from './interactionserver.js';
-import { openBigPicture } from './drawFullSize.js';
+import { loadPhotos } from './interaction-server.js';
+import { openBigPicture } from './draw-full-size.js';
+import {showFilters, initFilters} from './filter.js';
 // Модуль для отрисовки миниатюр
 
 const picturesContainer = document.querySelector('.pictures'); // Контейнер для картинок
@@ -45,7 +46,6 @@ function renderPictures(pictures) {
   picturesContainer.appendChild(fragment); // Вставляем фрагмент в контейнер
 }
 
-import {showFilters, initFilters} from './filter.js';
 loadPhotos()
   .then((photos) => {
     renderPictures(photos);

@@ -1,3 +1,6 @@
+// Обработчик отправки формы
+import { showSuccessMessage, showErrorMessage } from './upload.js';
+import { resetEffects } from './effects.js';
 const imgUploadPreview = document.querySelector('.img-upload__preview'); //Предварительный просмотр изображения
 const imgUploadPreviewImg = imgUploadPreview.querySelector('img'); //тег имг у предв просмотра
 const scaleControl = document.querySelector('.scale__control--value'); //ползунок размера изображения
@@ -7,7 +10,13 @@ const scaleControlBigger = document.querySelector('.scale__control--bigger'); //
 const imgUploadForm = document.querySelector('.img-upload__form'); //вся форма загрузки
 const textHashtags = document.querySelector('.text__hashtags'); //поле хештега
 const textDescription = document.querySelector('.text__description');
+const imgUploadInput = document.querySelector('.img-upload__input'); //инпут загрузки изображения
 
+const MAX_HASHTAGS_COUNT = 5;
+const MAX_DESCRIPTION_LENGTH = 140;
+const MIN_SCALE_VALUE = 25;
+const MAX_SCALE_VALUE = 100;
+const SCALE_STEP = 25;
 
 //2.3. Хэш-теги:
 // Валидация хэш-тегов
@@ -19,7 +28,7 @@ const validateHashtags = (value) => {
   const hashtags = value.trim().split(/\s+/);
 
   // Проверка на максимальное количество хэш-тегов
-  if (hashtags.length > 5){
+  if (hashtags.length > MAX_HASHTAGS_COUNT){
     return false;
   }
 
@@ -47,7 +56,7 @@ const getHashtagErrorMessage = (value) => {
 
   const hashtags = value.trim().split(/\s+/);
 
-  if (hashtags.length > 5){
+  if (hashtags.length > MAX_HASHTAGS_COUNT){
     return 'Нельзя указать больше пяти хэш-тегов';
   }
 
@@ -72,7 +81,7 @@ const getHashtagErrorMessage = (value) => {
 };
 
 // Валидация комментария
-const validateDescription = (value) => value.length <= 140;
+const validateDescription = (value) => value.length <= MAX_DESCRIPTION_LENGTH;
 
 // Создаем экземпляр Pristine
 const pristine = new Pristine(imgUploadForm, {
@@ -94,8 +103,15 @@ pristine.addValidator(
   'Длина комментария не может превышать 140 символов'
 );
 
-// Обработчик отправки формы
-import { showSuccessMessage, showErrorMessage } from './upload.js';
+//функция сброса формы
+function resetFrom(){
+  scaleControl.value = `${MAX_SCALE_VALUE}%`;
+  imgUploadPreviewImg.style.transform = 'scale(1)'; // Сбросим трансформацию
+  imgUploadPreviewImg.style.filter = 'none'; // Уберем все фильтры
+  imgUploadInput.value = ''; // Очистим инпут файла
+  pristine.reset(); // Сбросим валидацию
+  resetEffects();
+}
 
 const setUserFormSubmit = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
@@ -115,6 +131,7 @@ const setUserFormSubmit = (onSuccess) => {
           if (response.ok) {
             onSuccess(); // Закрытие формы
             showSuccessMessage(); // Показ сообщения об успехе
+            resetFrom();
           } else {
             showErrorMessage(); // Показ сообщения об ошибке
           }
@@ -150,8 +167,8 @@ textDescription.addEventListener('keydown', (evt) => {
 //2.1. Масштаб:
 // Обработчик для уменьшения значения
 scaleControlSmaller.addEventListener('click', () => {
-  if (scaleControlValue > 25) {
-    scaleControlValue -= 25;
+  if (scaleControlValue > MIN_SCALE_VALUE) {
+    scaleControlValue -= SCALE_STEP;
     scaleControl.value = `${scaleControlValue}%`;
     imgUploadPreviewImg.style.transform = `scale(${scaleControl.value})`;
   }
@@ -159,8 +176,8 @@ scaleControlSmaller.addEventListener('click', () => {
 
 // Обработчик для увеличения значения
 scaleControlBigger.addEventListener('click', () => {
-  if (scaleControlValue < 100) {
-    scaleControlValue += 25;
+  if (scaleControlValue < MAX_SCALE_VALUE) {
+    scaleControlValue += SCALE_STEP;
     scaleControl.value = `${scaleControlValue}%`;
     imgUploadPreviewImg.style.transform = `scale(${scaleControl.value})`;
   }
